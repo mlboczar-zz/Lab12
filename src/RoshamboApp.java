@@ -13,7 +13,7 @@ public class RoshamboApp {
         String playerName = scan.nextLine();
         System.out.println("Welcome " + playerName + "!");
 
-        Player opponent = selectOpponent();
+        Player opponent = Player.selectOpponent();
         System.out.println("You will be facing " + opponent.getPlayerName() + " in your Roshambo battle.");
 
         int counterPlayer = 0;
@@ -23,7 +23,7 @@ public class RoshamboApp {
 
         do {
             //Display prompt for user selection and get user input
-            Options playerChoice = userChoice();
+            Options playerChoice = CalculateWinner.userChoice();
             System.out.println("You have chosen " + playerChoice + ".");
 
             //Generate opponents choice
@@ -31,7 +31,7 @@ public class RoshamboApp {
 
             //Display match results
             System.out.println(opponent.getPlayerName() + " has chosen " + opponentChoice + ".");
-            int matchResult = calculateWinner(playerChoice, opponentChoice);
+            int matchResult = CalculateWinner.calculateWinner(playerChoice, opponentChoice);
             if (matchResult == 1){
                 System.out.println(playerName + " wins!");
                 counterPlayer++;
@@ -52,77 +52,5 @@ public class RoshamboApp {
         } while (keepGoing.equalsIgnoreCase("y"));
 
         System.out.println("Thanks for playing!");
-
-
-    }
-
-    private static Options userChoice() {
-        Scanner scan = new Scanner(System.in);
-        String playerInput = "";
-        Options playerChoice = null;
-
-        do {
-            System.out.println("Roshambo! Make your choice. Rock, paper, or scissors?");
-            playerInput = scan.nextLine();
-            if (playerInput.equalsIgnoreCase(Options.ROCK.toString())) {
-                playerChoice = Options.ROCK;
-            } else if (playerInput.equalsIgnoreCase(Options.PAPER.toString())) {
-                playerChoice = Options.PAPER;
-            } else if (playerInput.equalsIgnoreCase(Options.SCISSORS.toString())) {
-                playerChoice = Options.SCISSORS;
-            } else System.out.println("That is not a valid selection.");
-        } while (playerChoice == null);
-
-        return playerChoice;
-    }
-
-    private static Player selectOpponent() {
-        Scanner scan = new Scanner(System.in);
-        String opponentName = "";
-        Player opponent = null;
-
-        do {
-            System.out.println("Please select your opponent. Do you want to face Misty or Ashe?");
-            opponentName = scan.nextLine();
-            if (opponentName.equalsIgnoreCase("Misty")) {
-                opponent = new RandomPlayer();
-            } else if (opponentName.equalsIgnoreCase("Ash")) {
-                opponent = new RockPlayer();
-            } else System.out.println("That is not a valid selection.");
-        } while (opponent == null);
-
-        return opponent;
-    }
-
-    private static int calculateWinner(Options playerChoice, Options opponentChoice) {
-        switch (playerChoice) {
-            case ROCK:
-                switch (opponentChoice){
-                    case ROCK:
-                        return 0;
-                    case PAPER:
-                        return -1;
-                    case SCISSORS:
-                        return 1;
-                }
-            case PAPER:
-                switch (opponentChoice){
-                    case ROCK:
-                        return 1;
-                    case PAPER:
-                        return 0;
-                    case SCISSORS:
-                        return -1;
-                }
-            case SCISSORS:
-                switch (opponentChoice){
-                    case ROCK:
-                        return -1;
-                    case PAPER:
-                        return 1;
-                    case SCISSORS:
-                        return 0;
-                }
-        } return 0;         //should never be reached
     }
 }
